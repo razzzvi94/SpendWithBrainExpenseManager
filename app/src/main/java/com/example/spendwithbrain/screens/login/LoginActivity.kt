@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.screens.main.MainActivity
+import com.example.spendwithbrain.screens.register.RegisterActivity
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
 
@@ -16,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginBtn: ImageView
     lateinit var emailEditText: TextInputEditText
     lateinit var passwordEditText: TextInputEditText
+    lateinit var registerBtn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,9 @@ class LoginActivity : AppCompatActivity() {
         loginBtn = findViewById(R.id.btn_login)
         emailEditText = findViewById(R.id.edit_text_email)
         passwordEditText = findViewById(R.id.edit_text_password)
+        registerBtn = findViewById(R.id.register_textView_link)
         loginBtn.setOnClickListener(loginOnClickListener)
+        registerBtn.setOnClickListener(registerOnClickListener)
     }
 
     private val loginOnClickListener =
@@ -40,16 +45,25 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+    private val registerOnClickListener = View.OnClickListener {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+
+    }
+
     private fun checkInputs(): Boolean {
         val errors = StringBuilder("")
         var ok = true
         if (!Validations.emailValidation(emailEditText.text.toString())) {
             ok = false
-            errors.append("Email address wrong\n")
+            errors.append(getString(R.string.wrong_email))
+            errors.append("\n")
         }
         if (!Validations.passwordValidation(passwordEditText.text.toString())) {
             ok = false
-            errors.append("Password wrong\n")
+            errors.append(getString(R.string.wrong_password))
+            errors.append("\n")
         }
         if (!ok) {
             Toast.makeText(this@LoginActivity, errors, Toast.LENGTH_SHORT).show()

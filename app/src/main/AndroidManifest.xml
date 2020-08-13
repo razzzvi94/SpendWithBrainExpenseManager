@@ -25,7 +25,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarNoFullScreen" />
-        <activity android:name=".screens.register.RegisterActivity" />
+        <activity android:name=".screens.register.RegisterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarNoFullScreen"/>
         <activity android:name=".screens.main.MainActivity" />
         <activity android:name=".screens.converter.ConverterActivity" />
         <activity android:name=".screens.addaction.AddActionActivity" />
