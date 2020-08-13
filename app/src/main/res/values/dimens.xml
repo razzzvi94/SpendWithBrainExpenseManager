@@ -67,4 +67,10 @@
     <dimen name="space_100dp">100dp</dimen>
     <dimen name="space_170dp">170dp</dimen>
     <dimen name="space_25dp">25dp</dimen>
+    <dimen name="space_98dp">98dp</dimen>
+    <dimen name="space_34dp">34dp</dimen>
+    <dimen name="space_39dp">39dp</dimen>
+    <dimen name="space_53dp">53dp</dimen>
+    <dimen name="space_52dp">52dp</dimen>
+    <dimen name="space_9dp">9dp</dimen>
 </resources>
