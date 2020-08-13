@@ -5,12 +5,15 @@ import java.util.regex.Pattern
 
 object Validations {
         fun emailValidation(email: String): Boolean {
-            return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+            return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }
         fun passwordValidation(password: String): Boolean {
-            return !password.isNullOrEmpty() && Pattern.matches(
+            return password.isNotEmpty() && Pattern.matches(
                 "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!.*()_~])(?=\\S+$).{6,}$",
                 password
             )
         }
+    fun nameValidation(name: String): Boolean {
+        return name.isNotEmpty() && name.split(" ").size >= 2 && !Pattern.matches("/^[a-zA-Z\\s]*$/", name)
+    }
 }

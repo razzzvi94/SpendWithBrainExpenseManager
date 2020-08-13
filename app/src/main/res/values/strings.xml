@@ -9,4 +9,10 @@
     <string name="my_email">My email</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="register_text">Let us know more about you</string>
+    <string name="name">Name</string>
+    <string name="have_account">Have already an account?</string>
+    <string name="wrong_name">Name wrong</string>
+    <string name="wrong_email">Email address wrong</string>
+    <string name="wrong_password">Password wrong</string>
 </resources>
