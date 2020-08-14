@@ -1,11 +1,13 @@
 package com.example.spendwithbrain.db.interfaces
 
+import android.content.ClipData.Item
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.spendwithbrain.db.tables.UserDetails
+
 
 @Dao
 interface UserDAO {
@@ -16,5 +18,8 @@ interface UserDAO {
     fun insertOrUpdateUser(user: UserDetails)
 
     @Query("SELECT * FROM userDetails")
-    fun readDB(): List<UserDetails>
+    fun getAllUsers(): List<UserDetails>
+
+    @Query("SELECT * FROM userDetails WHERE userEmail = :user_email AND userPassword = :user_password")
+    fun getUserByEmailAndPassword(user_email: String, user_password: String): List<UserDetails>
 }

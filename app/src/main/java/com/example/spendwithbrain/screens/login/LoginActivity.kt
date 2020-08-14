@@ -7,7 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.example.spendwithbrain.R
+import com.example.spendwithbrain.db.ExpensesManagerDB
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.screens.register.RegisterActivity
 import com.example.spendwithbrain.utils.Validations
@@ -39,9 +41,25 @@ class LoginActivity : AppCompatActivity() {
     private val loginOnClickListener =
         View.OnClickListener {
             if (checkInputs()) {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                Thread{
+                    val db = Room.databaseBuilder(
+                        applicationContext,
+                        ExpensesManagerDB::class.java,
+                        "ExpenseManager.db"
+                    ).build()
+                    if(db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).isNotEmpty()){
+                        //if user exists in DB
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    else{
+                        //if user DOESN'T exist in DB
+                        val intent = Intent(this, RegisterActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }.start()
             }
         }
 

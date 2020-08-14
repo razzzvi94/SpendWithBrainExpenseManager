@@ -62,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 db.userDetailsDAO().insertOrUpdateUser(userDetails)
 
-                db.userDetailsDAO().readDB().forEach {
+                db.userDetailsDAO().getAllUsers().forEach {
                     Log.i("@TAG", """"ID is: ${it.userId}"""")
                     Log.i("@TAG", """"Name is: ${it.userName}"""")
                     Log.i("@TAG", """"Email is: ${it.userEmail}"""")

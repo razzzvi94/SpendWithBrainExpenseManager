@@ -6,7 +6,7 @@ import com.example.spendwithbrain.db.interfaces.UserDAO
 import com.example.spendwithbrain.db.tables.UserDetails
 
 @Database(
-    entities = arrayOf(UserDetails::class),//[UserDetails::class /*, add all tables from DB*/],
+    entities = [UserDetails::class/*, add all tables from DB*/],
     version = 1
 )
 abstract class ExpensesManagerDB : RoomDatabase() {
