@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/space_176dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="top"
+    android:background="@color/colorGreen"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/space_54dp"
+        android:layout_height="@dimen/space_54dp"
+        android:src="@drawable/ic_navigation_drawer"
+        android:layout_marginTop="@dimen/space_46dp"
+        android:layout_marginStart="@dimen/space_19dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_9dp"
+        tools:text="Hello John Deer"
+        android:fontFamily="@font/roboto_normal"
+        android:textSize="@dimen/text_20sp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="@dimen/space_16dp"/>
+</LinearLayout>

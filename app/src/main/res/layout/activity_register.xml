@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/name"
-            android:textColorHint="@color/colorLightGray"
+            android:textColorHint="@color/colorGray"
             android:fontFamily="@font/roboto_normal"
             android:textSize="@dimen/text_16sp"
             android:inputType="textPersonName"
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/email"
-            android:textColorHint="@color/colorLightGray"
+            android:textColorHint="@color/colorGray"
             android:fontFamily="@font/roboto_normal"
             android:textSize="@dimen/text_16sp"
             android:inputType="textEmailAddress"
@@ -130,7 +130,7 @@
             android:fontFamily="@font/roboto_normal"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textColorHint="@color/colorLightGray"
+            android:textColorHint="@color/colorGray"
             android:textSize="@dimen/text_16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
