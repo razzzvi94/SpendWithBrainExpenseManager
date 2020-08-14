@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.spendwithbrain.R
+import com.example.spendwithbrain.app.ExpensesApp
 import com.example.spendwithbrain.db.ExpensesManagerDB
+import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.screens.register.RegisterActivity
 import com.example.spendwithbrain.utils.Validations
@@ -17,10 +19,10 @@ import com.google.android.material.textfield.TextInputEditText
 
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var loginBtn: ImageView
-    lateinit var emailEditText: TextInputEditText
-    lateinit var passwordEditText: TextInputEditText
-    lateinit var registerBtn: TextView
+    private lateinit var loginBtn: ImageView
+    private lateinit var emailEditText: TextInputEditText
+    private lateinit var passwordEditText: TextInputEditText
+    private lateinit var registerBtn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +44,7 @@ class LoginActivity : AppCompatActivity() {
         View.OnClickListener {
             if (checkInputs()) {
                 Thread{
-                    val db = Room.databaseBuilder(
-                        applicationContext,
-                        ExpensesManagerDB::class.java,
-                        "ExpenseManager.db"
-                    ).build()
-                    if(db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).isNotEmpty()){
+                    if(RoomDb.db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).isNotEmpty()){
                         //if user exists in DB
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)

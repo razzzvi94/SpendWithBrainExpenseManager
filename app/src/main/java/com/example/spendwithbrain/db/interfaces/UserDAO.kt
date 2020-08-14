@@ -20,6 +20,6 @@ interface UserDAO {
     @Query("SELECT * FROM userDetails")
     fun getAllUsers(): List<UserDetails>
 
-    @Query("SELECT * FROM userDetails WHERE userEmail = :user_email AND userPassword = :user_password")
+    @Query("SELECT * FROM userDetails WHERE userEmail like :user_email AND userPassword like :user_password")
     fun getUserByEmailAndPassword(user_email: String, user_password: String): List<UserDetails>
 }

@@ -11,17 +11,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.ExpensesManagerDB
+import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.db.tables.UserDetails
 import com.example.spendwithbrain.screens.login.LoginActivity
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
 
 class RegisterActivity : AppCompatActivity() {
-    lateinit var registerBtn: ImageView
-    lateinit var nameEditText: TextInputEditText
-    lateinit var emailEditText: TextInputEditText
-    lateinit var passwordEditText: TextInputEditText
-    lateinit var loginBtn: TextView
+    private lateinit var registerBtn: ImageView
+    private lateinit var nameEditText: TextInputEditText
+    private lateinit var emailEditText: TextInputEditText
+    private lateinit var passwordEditText: TextInputEditText
+    private lateinit var loginBtn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,19 +51,14 @@ class RegisterActivity : AppCompatActivity() {
     private val registerOnClickListener = View.OnClickListener {
         if (checkInputs()) {
             Thread{
-                val db = Room.databaseBuilder(
-                    applicationContext,
-                    ExpensesManagerDB::class.java,
-                    "ExpenseManager.db"
-                ).build()
                 val userDetails = UserDetails(
                     userEmail = emailEditText.text.toString(),
                     userName = nameEditText.text.toString(),
                     userPassword = passwordEditText.text.toString()
                 )
-                db.userDetailsDAO().insertOrUpdateUser(userDetails)
+                RoomDb.db.userDetailsDAO().insertOrUpdateUser(userDetails)
 
-                db.userDetailsDAO().getAllUsers().forEach {
+                RoomDb.db.userDetailsDAO().getAllUsers().forEach {
                     Log.i("@TAG", """"ID is: ${it.userId}"""")
                     Log.i("@TAG", """"Name is: ${it.userName}"""")
                     Log.i("@TAG", """"Email is: ${it.userEmail}"""")

@@ -3,6 +3,7 @@
     package="com.example.spendwithbrain">
 
     <application
+        android:name=".app.ExpensesApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +14,8 @@
             android:name=".screens.spalsh.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarNoFullScreen">
+            android:theme="@style/NoActionBarNoFullScreen"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +26,18 @@
             android:name=".screens.login.LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarNoFullScreen" />
+            android:theme="@style/NoActionBarNoFullScreen"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".screens.register.RegisterActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarNoFullScreen"/>
-        <activity android:name=".screens.main.MainActivity" />
+            android:theme="@style/NoActionBarNoFullScreen"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".screens.main.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarNoFullScreen"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".screens.converter.ConverterActivity" />
         <activity android:name=".screens.addaction.AddActionActivity" />
     </application>
