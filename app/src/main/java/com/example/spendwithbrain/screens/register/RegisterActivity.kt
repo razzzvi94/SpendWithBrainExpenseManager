@@ -2,12 +2,16 @@ package com.example.spendwithbrain.screens.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.example.spendwithbrain.R
+import com.example.spendwithbrain.db.ExpensesManagerDB
+import com.example.spendwithbrain.db.tables.UserDetails
 import com.example.spendwithbrain.screens.login.LoginActivity
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
@@ -45,6 +49,26 @@ class RegisterActivity : AppCompatActivity() {
 
     private val registerOnClickListener = View.OnClickListener {
         if (checkInputs()) {
+            Thread{
+                val db = Room.databaseBuilder(
+                    applicationContext,
+                    ExpensesManagerDB::class.java,
+                    "ExpenseManager.db"
+                ).build()
+                val userDetails = UserDetails(
+                    userEmail = emailEditText.text.toString(),
+                    userName = nameEditText.text.toString(),
+                    userPassword = passwordEditText.text.toString()
+                )
+                db.userDetailsDAO().insertOrUpdateUser(userDetails)
+
+                db.userDetailsDAO().readDB().forEach {
+                    Log.i("@TAG", """"ID is: ${it.userId}"""")
+                    Log.i("@TAG", """"Name is: ${it.userName}"""")
+                    Log.i("@TAG", """"Email is: ${it.userEmail}"""")
+                }
+            }.start()
+
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
