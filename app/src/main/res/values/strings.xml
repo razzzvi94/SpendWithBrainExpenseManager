@@ -23,6 +23,16 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="my_budget">My Budget</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_expenses">My Expenses</string>
+    <string name="add_action">Add action</string>
+    <string name="date">Date</string>
+    <string name="hint_text">Hint text</string>
+    <string name="amount">Amount</string>
+    <string name="category">Category</string>
+    <string name="details">Details</string>
+    <string name="hint_date">Insert Date</string>
+    <string name="hint_amount">Insert Amount</string>
+    <string name="hint_details">Insert Details</string>
+    <string name="budget_saved">New Budget saved</string>
+    <string name="expense_saved">New Expense saved</string>
 </resources>

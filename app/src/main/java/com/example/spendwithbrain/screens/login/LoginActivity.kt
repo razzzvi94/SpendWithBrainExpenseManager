@@ -1,19 +1,21 @@
 package com.example.spendwithbrain.screens.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.example.spendwithbrain.R
-import com.example.spendwithbrain.app.ExpensesApp
-import com.example.spendwithbrain.db.ExpensesManagerDB
 import com.example.spendwithbrain.db.RoomDb
+import com.example.spendwithbrain.db.tables.UserDetails
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.screens.register.RegisterActivity
+import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
 
@@ -23,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var registerBtn: TextView
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +42,21 @@ class LoginActivity : AppCompatActivity() {
         registerBtn = findViewById(R.id.register_textView_link)
         loginBtn.setOnClickListener(loginOnClickListener)
         registerBtn.setOnClickListener(registerOnClickListener)
+
+        sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
     }
 
     private val loginOnClickListener =
         View.OnClickListener {
             if (checkInputs()) {
                 Thread{
-                    if(RoomDb.db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).isNotEmpty()){
+                   var list: List<UserDetails> = RoomDb.db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
+                    if(list.isNotEmpty()){
                         //if user exists in DB
+                        editor.putInt(Constants.USER_ID, list[0].userId)
+                        editor.putString(Constants.USER_NAME, list[0].userName)
+                        editor.commit()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()

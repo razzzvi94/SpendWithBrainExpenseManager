@@ -10,9 +10,9 @@ import java.util.*
 data class ExpensesDetails(
     @PrimaryKey(autoGenerate = true) var expensesId: Int = 0,
     @ForeignKey(entity = UserDetails::class, parentColumns = ["userId"], childColumns = ["userId"]) var userId: Int,
-    @ColumnInfo(name = "expensesDate") var expensesDate: Date,
+    @ColumnInfo(name = "expensesDate") var expensesDate: String,
     @ColumnInfo(name = "expensesAmount") var expensesAmount: Long,
     @ColumnInfo(name = "expensesCategory") var expensesCategory: String,
     @ColumnInfo(name = "expensesDetails") var expensesDetails: String,
-    @ColumnInfo(name = "expensesImage") var expensesImage: String
+    @ColumnInfo(name = "expensesImage") var expensesImage: ByteArray
 )
