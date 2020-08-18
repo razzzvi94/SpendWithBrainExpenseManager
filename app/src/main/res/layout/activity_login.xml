@@ -60,6 +60,7 @@
             android:textColorHint="@color/colorGray"
             android:fontFamily="@font/roboto_normal"
             android:textSize="@dimen/text_16sp"
+            tools:text="test_mobile@gmail.com"
             android:inputType="textEmailAddress"
             android:background="@null"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -130,6 +131,7 @@
             android:fontFamily="@font/roboto_normal"
             android:hint="@string/password"
             android:inputType="textPassword"
+            tools:text="Parola123#"
             android:textColorHint="@color/colorGray"
             android:textSize="@dimen/text_16sp" />
     </com.google.android.material.textfield.TextInputLayout>

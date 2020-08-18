@@ -1,6 +1,8 @@
 package com.example.spendwithbrain.screens.main
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +20,7 @@ import com.example.spendwithbrain.screens.converter.ConverterActivity
 import com.example.spendwithbrain.screens.login.LoginActivity
 import com.example.spendwithbrain.screens.main.fragments.BudgetFragment
 import com.example.spendwithbrain.screens.main.fragments.ExpensesFragment
+import com.example.spendwithbrain.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
@@ -30,6 +33,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var sideMenuNavigationView: NavigationView
     private lateinit var btnLogout: TextView
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var userName: TextView
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +73,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initComponents() {
+        sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
         btnAddAction = findViewById(R.id.button_add_action)
         btnAddAction.setOnClickListener(addActionOnClickListener)
 
@@ -92,6 +101,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initNavigationDrawer() {
+        val header = (findViewById<NavigationView>(R.id.home_nav_view)).getHeaderView(0)
+        userName = header.findViewById(R.id.side_menu_user_name)
+        if(sharedPreferences.contains(Constants.USER_NAME)){
+            userName.text = sharedPreferences.getString(Constants.USER_NAME, "")
+        }
+
         navigationDrawer = findViewById(R.id.home_drawer_layout)
         actionBarToggle = ActionBarDrawerToggle(
             this,
@@ -110,10 +125,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val addActionOnClickListener = View.OnClickListener {
         val intent = Intent(this, AddActionActivity::class.java)
+        intent.putExtra(Constants.FRAGMENT_TITLE, toolbar.title)
         startActivity(intent)
     }
 
     private val logoutOnClickListener = View.OnClickListener {
+        editor.clear()
+        editor.commit()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
@@ -128,8 +146,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             var selectedFragment: Fragment? = null
             when (item.itemId) {
-                R.id.bottom_nav_budget -> selectedFragment = BudgetFragment()
-                R.id._bottom_nav_expenses -> selectedFragment = ExpensesFragment()
+                R.id.bottom_nav_budget -> {
+                    selectedFragment = BudgetFragment()
+                    toolbar.title = resources.getString(R.string.my_budget)
+                }
+                R.id._bottom_nav_expenses -> {
+                    selectedFragment = ExpensesFragment()
+                    toolbar.title = resources.getString(R.string.my_expenses)
+                }
             }
             supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
