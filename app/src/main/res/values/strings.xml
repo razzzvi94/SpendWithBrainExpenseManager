@@ -29,10 +29,18 @@
     <string name="hint_text">Hint text</string>
     <string name="amount">Amount</string>
     <string name="category">Category</string>
-    <string name="details">Details</string>
     <string name="hint_date">Insert Date</string>
     <string name="hint_amount">Insert Amount</string>
     <string name="hint_details">Insert Details</string>
     <string name="budget_saved">New Budget saved</string>
     <string name="expense_saved">New Expense saved</string>
+    <string name="add_budget">Add Budget</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="base_information">Base information</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="this_week_expenses">This week expenses</string>
+    <string name="this_month_expenses">This month expenses</string>
+    <string name="details">Details</string>
+    <string name="today_expenses">Today Expenses</string>
+    <string name="income">Income</string>
 </resources>

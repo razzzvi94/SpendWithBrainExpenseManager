@@ -1,8 +1,6 @@
 package com.example.spendwithbrain.screens.register
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -11,9 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
-import com.example.spendwithbrain.db.tables.UserDetails
+import com.example.spendwithbrain.db.entities.UserDetails
 import com.example.spendwithbrain.screens.login.LoginActivity
-import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
 

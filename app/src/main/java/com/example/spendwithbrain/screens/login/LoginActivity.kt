@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
-import com.example.spendwithbrain.db.tables.UserDetails
+import com.example.spendwithbrain.db.entities.UserDetails
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.screens.register.RegisterActivity
 import com.example.spendwithbrain.utils.Constants

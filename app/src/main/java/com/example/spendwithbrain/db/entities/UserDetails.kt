@@ -1,4 +1,4 @@
-package com.example.spendwithbrain.db.tables
+package com.example.spendwithbrain.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
