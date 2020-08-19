@@ -79,4 +79,5 @@
     <dimen name="space_53dp">53dp</dimen>
     <dimen name="space_52dp">52dp</dimen>
     <dimen name="space_9dp">9dp</dimen>
+    <dimen name="space_190dp">190dp</dimen>
 </resources>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -19,12 +20,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
-import com.example.spendwithbrain.db.tables.ExpensesDetails
-import com.example.spendwithbrain.db.tables.IncomeDetails
-import com.example.spendwithbrain.db.tables.UserDetails
+import com.example.spendwithbrain.db.entities.ExpensesDetails
+import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.models.CategoryItem
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapter
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapterListener
+import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.utils.Constants
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -48,6 +49,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private var userId: Int = -1
+    private var gmtTimestamp: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +79,9 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     }
 
     private fun initComponents() {
-        sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
-        if(sharedPreferences.contains(Constants.USER_ID)){
+        sharedPreferences =
+            getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        if (sharedPreferences.contains(Constants.USER_ID)) {
             userId = sharedPreferences.getInt(Constants.USER_ID, -1)
         }
 
@@ -94,8 +97,6 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
         detailsImage.setOnClickListener(loadImageOnClickListener)
         deleteImage.setOnClickListener(deleteImageOnClickListener)
         saveButton.setOnClickListener(saveOnClickListener)
-
-        fragmentTitle = intent.getStringExtra(Constants.FRAGMENT_TITLE)
     }
 
     private fun initToolbar() {
@@ -128,6 +129,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
             )
             dpd.show()
         }
+        gmtTimestamp = Calendar.getInstance().timeInMillis
     }
 
     private fun initCategoryGrid() {
@@ -169,35 +171,48 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     }
 
     private val saveOnClickListener = View.OnClickListener {
+        var defaultDetailsText: String = "";
+        var defaultDetailsImage: Drawable = resources.getDrawable(android.R.color.transparent)
         Thread {
-            if (fragmentTitle == resources.getString(R.string.my_budget) && sharedPreferences.contains(Constants.USER_ID)) {
+            if(detailsText.text.toString()!=null){
+                defaultDetailsText = detailsText.text.toString()
+            }
+            if(detailsImage.drawable != null){
+                defaultDetailsImage = detailsImage.drawable
+            }
+            if (categorySelected == resources.getString(R.string.income) && sharedPreferences.contains(
+                    Constants.USER_ID
+                )
+            ) {
                 val objDetails = IncomeDetails(
                     userId = userId,
-                    incomeDate = dateEditText.text.toString(),
+                    incomeDate = gmtTimestamp,
                     incomeAmount = amountEditText.text.toString().toLong(),
                     incomeCategory = categorySelected,
-                    incomeDetails = detailsText.text.toString(),
+                    incomeDetails = defaultDetailsText,
                     incomeImage = imageToBitmap(detailsImage)
                 )
 
                 RoomDb.db.userDetailsDAO().insertOrUpdateIncome(objDetails)
                 RoomDb.db.userDetailsDAO().updateUserBudget(userId, amountEditText.text.toString().toLong())
             } else {
-                val objDetails = ExpensesDetails(
-                    userId = userId,
-                    expensesDate = dateEditText.text.toString(),
-                    expensesAmount = amountEditText.text.toString().toLong(),
-                    expensesCategory = categorySelected,
-                    expensesDetails = detailsText.text.toString(),
-                    expensesImage = imageToBitmap(detailsImage)
-                )
+                if (sharedPreferences.contains(Constants.USER_ID)) {
+                    val objDetails = ExpensesDetails(
+                        userId = userId,
+                        expensesDate = gmtTimestamp,
+                        expensesAmount = amountEditText.text.toString().toLong(),
+                        expensesCategory = categorySelected,
+                        expensesDetails = defaultDetailsText,
+                        expensesImage = imageToBitmap(detailsImage)
+                    )
 
-                RoomDb.db.userDetailsDAO().insertOrUpdateExpense(objDetails)
-                RoomDb.db.userDetailsDAO().updateUserExpense(userId, amountEditText.text.toString().toLong())
+                    RoomDb.db.userDetailsDAO().insertOrUpdateExpense(objDetails)
+                    RoomDb.db.userDetailsDAO().updateUserExpense(userId, amountEditText.text.toString().toLong())
+                }
             }
         }.start()
 
-        if (fragmentTitle == resources.getString(R.string.my_budget)) {
+        if (categorySelected == resources.getString(R.string.income)) {
             Toast.makeText(this, getString(R.string.budget_saved), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, getString(R.string.expense_saved), Toast.LENGTH_SHORT).show()

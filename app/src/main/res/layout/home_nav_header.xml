@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/side_menu_user_image"
-        android:layout_width="@dimen/space_54dp"
-        android:layout_height="@dimen/space_54dp"
+        android:layout_width="@dimen/space_60dp"
+        android:layout_height="@dimen/space_60dp"
         android:src="@drawable/ic_navigation_drawer"
-        android:layout_marginTop="@dimen/space_46dp"
+        android:layout_marginTop="@dimen/space_56dp"
         android:layout_marginStart="@dimen/space_19dp"/>
     <TextView
         android:id="@+id/side_menu_user_name"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_9dp"
         tools:text="Hello John Deer"
-        android:fontFamily="@font/roboto_normal"
+        android:fontFamily="@font/roboto_medium"
         android:textSize="@dimen/text_20sp"
         android:textColor="@color/colorBlack"
         android:layout_marginStart="@dimen/space_16dp"/>

@@ -25,6 +25,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -43,5 +47,5 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
     // Testing support
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

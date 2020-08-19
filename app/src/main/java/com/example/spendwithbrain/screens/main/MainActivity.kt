@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else super.onOptionsItemSelected(item)
     }
 
+    @Override
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> navigationDrawer.closeDrawers()
@@ -125,7 +126,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val addActionOnClickListener = View.OnClickListener {
         val intent = Intent(this, AddActionActivity::class.java)
-        intent.putExtra(Constants.FRAGMENT_TITLE, toolbar.title)
         startActivity(intent)
     }
 
