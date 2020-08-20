@@ -14,4 +14,7 @@ interface ExpenseDAO {
 
     @Query("SELECT expensesId, userId, expensesDate, SUM(expensesAmount)  AS expensesAmount, expensesCategory, expensesDetails, expensesImage FROM expensesDetails WHERE userId = :id GROUP BY expensesCategory")
     fun getExpenseByCategory(id: Int): List<ExpensesDetails>
+
+//    @Query("")
+//    fun getMedianBalance(id: Int): List<ExpensesDetails>
 }

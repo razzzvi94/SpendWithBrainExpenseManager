@@ -12,7 +12,7 @@ class ExpensesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_expenses, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_expenses, container, false)
+        return view
     }
 }
