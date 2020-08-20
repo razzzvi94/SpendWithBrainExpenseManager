@@ -43,4 +43,5 @@
     <string name="details">Details</string>
     <string name="today_expenses">Today Expenses</string>
     <string name="income">Income</string>
+    <string name="expense_details_month">Expense details this month</string>
 </resources>
