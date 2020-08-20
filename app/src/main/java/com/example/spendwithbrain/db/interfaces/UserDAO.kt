@@ -29,18 +29,6 @@ interface UserDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateExpense(expense: ExpensesDetails)
 
-    @Query("UPDATE userDetails SET userCurrentBalance = userCurrentBalance + :new_income WHERE userId = :id")
-    fun updateUserBudget(id: Int, new_income: Long): Int
-
-    @Query("UPDATE userDetails SET userCurrentBalance = userCurrentBalance - :new_expense WHERE userId = :id")
-    fun updateUserExpense(id: Int, new_expense: Long): Int
-
     @Query("SELECT userCurrentBalance FROM userDetails WHERE userId = :userId")
     fun getUserBalance(userId: Int): Int
-
-    @Query("SELECT SUM(expensesAmount) FROM expensesDetails WHERE expensesDate BETWEEN :startDate AND :endDate GROUP BY :id")
-    fun getUserExpenseByDate(startDate: Long, endDate: Long, id: Int): Long
-
-//    @Query("SELECT SUM(expensesAmount) FROM expensesDetails WHERE userId = :id GROUP BY expensesCategory")
-//    fun getExpenseByCategory(id: Int): List<ExpensesDetails>
 }

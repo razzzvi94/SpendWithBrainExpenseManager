@@ -8,18 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
+import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.utils.Constants
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.fragment_budget.*
+import kotlinx.android.synthetic.main.home_toolbar.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BudgetFragment : Fragment() {
@@ -39,7 +44,7 @@ class BudgetFragment : Fragment() {
 
         initViewComponents(view)
         initComponents(view)
-        setBarChart(view)
+        setUpChart()
         return view
     }
 
@@ -48,6 +53,7 @@ class BudgetFragment : Fragment() {
         todayExpenseValue = view.findViewById(R.id.today_expense_value_textView)
         weekExpenseValue = view.findViewById(R.id.week_expense_value_textView)
         monthExpenseValue = view.findViewById(R.id.month_expense_value_textView)
+        barChart = view.findViewById(R.id.details_barChart)
     }
 
     private fun initComponents(view: View) {
@@ -69,19 +75,19 @@ class BudgetFragment : Fragment() {
             Thread {
                 balanceValue.text = RoomDb.db.userDetailsDAO()
                     .getUserBalance(sharedPreferences.getInt(Constants.USER_ID, -1)).toString()
-                todayExpenseValue.text = RoomDb.db.userDetailsDAO().getUserExpenseByDate(
+                todayExpenseValue.text = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startDay,
                     endDay,
                     sharedPreferences.getInt(Constants.USER_ID, -1)
                 ).toString()
 
-                weekExpenseValue.text = RoomDb.db.userDetailsDAO().getUserExpenseByDate(
+                weekExpenseValue.text = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startWeek,
                     endDay,
                     sharedPreferences.getInt(Constants.USER_ID, -1)
                 ).toString()
 
-                monthExpenseValue.text = RoomDb.db.userDetailsDAO().getUserExpenseByDate(
+                monthExpenseValue.text = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startMonth,
                     endDay,
                     sharedPreferences.getInt(Constants.USER_ID, -1)
@@ -90,19 +96,51 @@ class BudgetFragment : Fragment() {
         }
     }
 
-    private fun setBarChart(view: View) {
-        barChart = view.findViewById(R.id.details_barChart)
+    private fun setUpChart() {
+        val list: ArrayList<BarEntry> = ArrayList()
+        val xAxisLabel: ArrayList<String> = ArrayList()
 
-        val NoOfEmp = ArrayList<BarEntry>()
+        var dbList: List<ExpensesDetails> = ArrayList()
+        if (sharedPreferences.contains(Constants.USER_ID)) {
+            Thread{
+                dbList = RoomDb.db.expenseDetailsDAO().getExpenseByCategory(sharedPreferences.getInt(Constants.USER_ID, -1))
+                for (i in dbList.indices){
+                    xAxisLabel.add(dbList[i].expensesCategory)
+                    val entry = BarEntry(i.toFloat(), dbList[i].expensesAmount.toFloat())
+                    list.add(entry)
+                }
 
-        NoOfEmp.add(BarEntry(945f, 0.toFloat()))
-        NoOfEmp.add(BarEntry(1040f, 1.toFloat()))
-        NoOfEmp.add(BarEntry(1133f, 2.toFloat()))
-        NoOfEmp.add(BarEntry(1240f, 3.toFloat()))
+                setAppearanceForChart(xAxisLabel, list)
+            }.start()
+        }
+    }
 
-        val barDataSet = BarDataSet(NoOfEmp, "")
-        val data = BarData(barDataSet)
-        barDataSet.setColors(resources.getColor(R.color.colorGreen))
-        barChart.setData(data)
+    private fun setAppearanceForChart(xAxisLabel: ArrayList<String>, list: List<BarEntry>) {
+        val barData = BarData() //all the data for chart
+        val dataSet = BarDataSet(list, "")
+        dataSet.color = resources.getColor(R.color.colorChartGreen)
+        dataSet.valueTextSize = 10f
+        barData.addDataSet(dataSet)
+        barData.barWidth = 0.7f
+
+        //set up the x coordinate
+        val xAxis = barChart.xAxis
+        val yAxis = barChart.axisLeft
+        xAxis.labelCount = xAxisLabel.size + 1
+        xAxis.granularity = 1f
+        xAxis.setDrawGridLines(true)
+        yAxis.setDrawGridLines(false)
+
+        //modify the default appearance
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        barChart.legend.isEnabled = false
+        barChart.description.isEnabled = false
+        barChart.axisRight.isEnabled = false
+        barChart.xAxis.textSize = 10f
+        barChart.setExtraOffsets(0f, 0f, 0f, 1f)
+        barChart.axisLeft.textSize = 14f
+        barChart.data = barData
+        barChart.invalidate()
     }
 }

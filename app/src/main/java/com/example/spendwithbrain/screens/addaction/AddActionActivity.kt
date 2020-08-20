@@ -25,7 +25,6 @@ import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.models.CategoryItem
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapter
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapterListener
-import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.utils.Constants
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -174,10 +173,10 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
         var defaultDetailsText: String = "";
         var defaultDetailsImage: Drawable = resources.getDrawable(android.R.color.transparent)
         Thread {
-            if(detailsText.text.toString()!=null){
+            if (detailsText.text.toString() != null) {
                 defaultDetailsText = detailsText.text.toString()
             }
-            if(detailsImage.drawable != null){
+            if (detailsImage.drawable != null) {
                 defaultDetailsImage = detailsImage.drawable
             }
             if (categorySelected == resources.getString(R.string.income) && sharedPreferences.contains(
@@ -194,7 +193,8 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
                 )
 
                 RoomDb.db.userDetailsDAO().insertOrUpdateIncome(objDetails)
-                RoomDb.db.userDetailsDAO().updateUserBudget(userId, amountEditText.text.toString().toLong())
+                RoomDb.db.incomeDetailsDAO()
+                    .updateUserBudget(userId, amountEditText.text.toString().toLong())
             } else {
                 if (sharedPreferences.contains(Constants.USER_ID)) {
                     val objDetails = ExpensesDetails(
@@ -207,7 +207,8 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
                     )
 
                     RoomDb.db.userDetailsDAO().insertOrUpdateExpense(objDetails)
-                    RoomDb.db.userDetailsDAO().updateUserExpense(userId, amountEditText.text.toString().toLong())
+                    RoomDb.db.expenseDetailsDAO()
+                        .updateUserExpense(userId, amountEditText.text.toString().toLong())
                 }
             }
         }.start()
@@ -221,10 +222,13 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     }
 
     private fun imageToBitmap(image: ImageView): ByteArray {
-        val bitmap = (image.drawable as BitmapDrawable).bitmap
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-
-        return stream.toByteArray()
+        var returnArray = ByteArray(0)
+        if(image.drawable != null){
+            val bitmap = (image.drawable as BitmapDrawable).bitmap
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            returnArray = stream.toByteArray()
+        }
+        return returnArray
     }
 }

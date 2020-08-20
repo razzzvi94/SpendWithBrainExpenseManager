@@ -15,4 +15,5 @@
     <color name="colorTransparentGreen">#40009688</color>
     <color name="colorTransparentRed">#40E05858</color>
     <color name="colorRed">#FD1313</color>
+    <color name="colorChartGreen">#3ddc4d</color>
 </resources>
