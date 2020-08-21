@@ -44,4 +44,6 @@
     <string name="today_expenses">Today Expenses</string>
     <string name="income">Income</string>
     <string name="expense_details_month">Expense details this month</string>
+    <string name="positive_balance">Positive Balance</string>
+    <string name="negative_balance">Negative Balance</string>
 </resources>

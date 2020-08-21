@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -26,6 +28,9 @@ import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+   lateinit var layout :View
+
+
     private lateinit var toolbar: Toolbar
     private lateinit var navigationDrawer: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
@@ -36,11 +41,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var userName: TextView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var fragmentName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        layout = View.inflate(this,R.layout.activity_main,null)
+        setContentView(layout)
         initComponents()
         initToolbar()
         initNavigationDrawer()
@@ -149,10 +156,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.bottom_nav_budget -> {
                     selectedFragment = BudgetFragment()
                     toolbar.title = resources.getString(R.string.my_budget)
+                    fragmentName = resources.getString(R.string.my_budget)
                 }
                 R.id._bottom_nav_expenses -> {
                     selectedFragment = ExpensesFragment()
                     toolbar.title = resources.getString(R.string.my_expenses)
+                    fragmentName = resources.getString(R.string.my_expenses)
                 }
             }
             supportFragmentManager.beginTransaction().replace(
