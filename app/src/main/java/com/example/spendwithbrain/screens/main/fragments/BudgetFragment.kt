@@ -61,7 +61,6 @@ class BudgetFragment : Fragment() {
                 computeMonthCashFlow(userDetails, startDate, endDate)
             endDate = startDate - 1000
         }
-        chartMap
         setUpChart()
     }
 

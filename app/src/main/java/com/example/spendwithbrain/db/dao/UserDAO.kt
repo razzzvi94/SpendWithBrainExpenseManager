@@ -5,8 +5,6 @@ import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.db.entities.UserDetails
 import com.example.spendwithbrain.db.models.UserWithExpenses
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 
 @Dao
