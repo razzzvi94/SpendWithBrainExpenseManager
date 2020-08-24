@@ -38,8 +38,6 @@ class LoginActivity : AppCompatActivity() {
         registerBtn = findViewById(R.id.register_textView_link)
         loginBtn.setOnClickListener(loginOnClickListener)
         registerBtn.setOnClickListener(registerOnClickListener)
-
-        SharedPrefUtils.init(applicationContext)
     }
 
     private val loginOnClickListener =

@@ -71,8 +71,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initComponents() {
-        SharedPrefUtils.init(applicationContext)
-
         layout.button_add_action.setOnClickListener(addActionOnClickListener)
         layout.home_nav_view.setNavigationItemSelectedListener(this)
         layout.logout_btn.setOnClickListener(logoutOnClickListener)

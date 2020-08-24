@@ -12,18 +12,12 @@ import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.SharedPrefUtils
 
 class SplashActivity : AppCompatActivity() {
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        initComponents()
         splashDelay()
-    }
-
-    private fun initComponents() {
-        SharedPrefUtils.init(applicationContext)
     }
 
     private fun splashDelay() {

@@ -75,9 +75,8 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     }
 
     private fun initComponents() {
-        SharedPrefUtils.init(applicationContext)
         if (SharedPrefUtils.hasKey(Constants.USER_ID)) {
-            userId = SharedPrefUtils.read(Constants.USER_ID, -1)!!
+            userId = SharedPrefUtils.read(Constants.USER_ID, -1)
         }
 
         dateEditText = findViewById(R.id.date_EditText)

@@ -64,12 +64,7 @@ class BudgetFragment : Fragment() {
 
     private fun loadUserWithExpenses(): UserWithExpenses {
         return RoomDb.db.userDetailsDAO()
-            .getUserExpenses(
-                activity!!.getSharedPreferences(
-                    Constants.MY_SHARED_PREFERENCE,
-                    Constants.PRIVATE_MODE
-                ).getInt(Constants.USER_ID, -1)
-            )
+            .getUserExpenses(SharedPrefUtils.read(Constants.USER_ID, -1))
     }
 
     private fun computeMonthCashFlow(
@@ -96,8 +91,6 @@ class BudgetFragment : Fragment() {
     }
 
     private fun initComponents() {
-        SharedPrefUtils.init(activity!!)
-
         val startDay = Calendar.getInstance().timeInMillis - (24 * 60 * 60 * 1000)
         val endDay = Calendar.getInstance().timeInMillis
 
