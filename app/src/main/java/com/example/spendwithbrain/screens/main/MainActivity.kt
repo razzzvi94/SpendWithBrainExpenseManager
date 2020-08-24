@@ -25,23 +25,19 @@ import com.example.spendwithbrain.screens.main.fragments.ExpensesFragment
 import com.example.spendwithbrain.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.home_nav_header.view.*
+import kotlinx.android.synthetic.main.home_toolbar.view.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-   lateinit var layout :View
-
-
+    private lateinit var layout :View
     private lateinit var toolbar: Toolbar
     private lateinit var navigationDrawer: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
-    private lateinit var btnAddAction: ImageView
-    private lateinit var sideMenuNavigationView: NavigationView
-    private lateinit var btnLogout: TextView
-    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var userName: TextView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    private lateinit var fragmentName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,14 +80,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
-        btnAddAction = findViewById(R.id.button_add_action)
-        btnAddAction.setOnClickListener(addActionOnClickListener)
-
-        sideMenuNavigationView = findViewById(R.id.home_nav_view)
-        sideMenuNavigationView.setNavigationItemSelectedListener(this)
-
-        btnLogout = findViewById(R.id.logout_btn)
-        btnLogout.setOnClickListener(logoutOnClickListener)
+        layout.button_add_action.setOnClickListener(addActionOnClickListener)
+        layout.home_nav_view.setNavigationItemSelectedListener(this)
+        layout.logout_btn.setOnClickListener(logoutOnClickListener)
 
         supportFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
@@ -100,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initToolbar() {
-        toolbar = findViewById(R.id.home_tool_bar)
+        toolbar = layout.home_tool_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.title = getString(R.string.my_budget)
@@ -109,13 +100,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initNavigationDrawer() {
-        val header = (findViewById<NavigationView>(R.id.home_nav_view)).getHeaderView(0)
-        userName = header.findViewById(R.id.side_menu_user_name)
+        val header = layout.home_nav_view.getHeaderView(0)
+        userName = header.side_menu_user_name
         if(sharedPreferences.contains(Constants.USER_NAME)){
             userName.text = sharedPreferences.getString(Constants.USER_NAME, "")
         }
 
-        navigationDrawer = findViewById(R.id.home_drawer_layout)
+        navigationDrawer = layout.home_drawer_layout
         actionBarToggle = ActionBarDrawerToggle(
             this,
             navigationDrawer,
@@ -127,8 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initBottomNavigationView() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener(navListener)
+        layout.bottom_navigation.setOnNavigationItemSelectedListener(navListener)
     }
 
     private val addActionOnClickListener = View.OnClickListener {
@@ -156,12 +146,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.bottom_nav_budget -> {
                     selectedFragment = BudgetFragment()
                     toolbar.title = resources.getString(R.string.my_budget)
-                    fragmentName = resources.getString(R.string.my_budget)
                 }
                 R.id._bottom_nav_expenses -> {
                     selectedFragment = ExpensesFragment()
                     toolbar.title = resources.getString(R.string.my_expenses)
-                    fragmentName = resources.getString(R.string.my_expenses)
                 }
             }
             supportFragmentManager.beginTransaction().replace(
