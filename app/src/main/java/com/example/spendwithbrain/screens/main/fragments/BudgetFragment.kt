@@ -9,10 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
+import com.example.spendwithbrain.db.models.UserWithExpenses
 import com.example.spendwithbrain.utils.Constants
+import com.example.spendwithbrain.utils.DateUtils
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -21,44 +24,78 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import kotlinx.android.synthetic.main.fragment_budget.*
+import kotlinx.android.synthetic.main.fragment_budget.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class BudgetFragment : Fragment() {
+    private lateinit var layout: View
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
     private lateinit var balanceValue: TextView
     private lateinit var todayExpenseValue: TextView
     private lateinit var weekExpenseValue: TextView
     private lateinit var monthExpenseValue: TextView
     private lateinit var barChart: BarChart
+    private var chartMap: LinkedHashMap<String, Double> = linkedMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_budget, container, false)
-        Log.d("BudgetFragment", "On create")
-        initViewComponents(view)
-        initComponents()
-        setUpChart()
-        return view
+        layout = inflater.inflate(R.layout.fragment_budget, container, false)
+        initViewComponents(layout)
+        return layout
     }
 
     @Override
     override fun onResume() {
         super.onResume()
-        setUpChart()
         initComponents()
+        val userDetails = loadUserWithExpenses()
+        var endDate = System.currentTimeMillis()
+        for (i in 0..11) {
+            val startDate = DateUtils.getOneMonthAgoTime(endDate)
+            chartMap[DateUtils.getMonthName(startDate)] =
+                computeMonthCashFlow(userDetails, startDate, endDate)
+            endDate = startDate - 1000
+        }
+        chartMap
+        setUpChart()
+    }
+
+    private fun loadUserWithExpenses(): UserWithExpenses {
+        return RoomDb.db.userDetailsDAO()
+            .getUserExpenses(
+                activity!!.getSharedPreferences(
+                    Constants.MY_SHARED_PREFERENCE,
+                    Constants.PRIVATE_MODE
+                ).getInt(Constants.USER_ID, -1)
+            )
+    }
+
+    private fun computeMonthCashFlow(
+        userWithExpenses: UserWithExpenses,
+        startDate: Long,
+        endDate: Long
+    ): Double {
+        val expensesSum =
+            userWithExpenses.expenses.filter { ex -> ex.expensesDate in startDate..endDate }
+                .sumByDouble { it.expensesAmount.toDouble() }
+        val incomeSum =
+            userWithExpenses.incomes.filter { ex -> ex.incomeDate in startDate..endDate }
+                .sumByDouble { it.incomeAmount.toDouble() }
+
+        return incomeSum - expensesSum
     }
 
     private fun initViewComponents(view: View) {
-        balanceValue = view.findViewById(R.id.balance_value_textView)
-        todayExpenseValue = view.findViewById(R.id.today_expense_value_textView)
-        weekExpenseValue = view.findViewById(R.id.week_expense_value_textView)
-        monthExpenseValue = view.findViewById(R.id.month_expense_value_textView)
-        barChart = view.findViewById(R.id.details_barChart)
+        balanceValue = view.balance_value_textView
+        todayExpenseValue = view.today_expense_value_textView
+        weekExpenseValue = view.week_expense_value_textView
+        monthExpenseValue = view.month_expense_value_textView
+        barChart = view.details_barChart
     }
 
     private fun initComponents() {
@@ -78,32 +115,32 @@ class BudgetFragment : Fragment() {
 
         if (sharedPreferences.contains(Constants.USER_ID)) {
             Thread {
-
+                val userId = sharedPreferences.getInt(Constants.USER_ID, -1)
                 val userBalance = RoomDb.db.userDetailsDAO()
-                    .getUserBalance(sharedPreferences.getInt(Constants.USER_ID, -1)).toString()
+                    .getUserBalance(userId).toString()
 
                 val expensesByDate = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startDay,
                     endDay,
-                    sharedPreferences.getInt(Constants.USER_ID, -1)
+                    userId
                 ).toString()
 
                 val expensesByWeek = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startWeek,
                     endDay,
-                    sharedPreferences.getInt(Constants.USER_ID, -1)
+                    userId
                 ).toString()
 
                 val expensesByMonth = RoomDb.db.expenseDetailsDAO().getUserExpenseByDate(
                     startMonth,
                     endDay,
-                    sharedPreferences.getInt(Constants.USER_ID, -1)
+                    userId
                 ).toString()
 
                 this.activity?.let { activity ->
                     Handler(activity.mainLooper).post {
                         balanceValue.text = userBalance
-                        todayExpenseValue.text = expensesByDate
+                        today_expense_value_textView.text = expensesByDate
                         weekExpenseValue.text = expensesByWeek
                         monthExpenseValue.text = expensesByMonth
                     }
@@ -116,15 +153,17 @@ class BudgetFragment : Fragment() {
 
     private fun setUpChart() {
         val list: ArrayList<BarEntry> = ArrayList()
-        val xAxisLabel: ArrayList<String> = ArrayList()
         val colors: ArrayList<Int> = ArrayList()
 
-        val months: Array<String> = arrayOf<String>("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-        val balance: Array<Int> = arrayOf<Int>(50, 50, 10, -10, -20, 70, 50, 10, 60, 50, 30, 90)
+        val balance = mutableListOf<Double>()
+        val xAxisLabel = mutableListOf<String>()
 
-        for (i in months.indices) {
-            xAxisLabel.add(months[i])
+        chartMap.forEach { (s, d) ->
+            xAxisLabel.add(s)
+            balance.add(d)
         }
+        xAxisLabel.reverse()
+        balance.reverse()
 
         for (i in balance.indices) {
             list.add(BarEntry(i.toFloat(), balance[i].toFloat()))
@@ -136,25 +175,10 @@ class BudgetFragment : Fragment() {
         }
 
         setAppearanceForChart(xAxisLabel, list, colors)
-
-//        var dbList: List<ExpensesDetails> = ArrayList()
-//        if (sharedPreferences.contains(Constants.USER_ID)) {
-//            Thread {
-//                dbList = RoomDb.db.expenseDetailsDAO()
-//                    .getExpenseByCategory(sharedPreferences.getInt(Constants.USER_ID, -1))
-//                for (i in dbList.indices) {
-//                    xAxisLabel.add(dbList[i].expensesCategory)
-//                    val entry = BarEntry(i.toFloat(), dbList[i].expensesAmount.toFloat())
-//                    list.add(entry)
-//                }
-//
-//                setAppearanceForChart(xAxisLabel, list)
-//            }.start()
-//        }
     }
 
     private fun setAppearanceForChart(
-        xAxisLabel: ArrayList<String>,
+        xAxisLabel: MutableList<String>,
         list: List<BarEntry>,
         colors: ArrayList<Int>
     ) {
@@ -177,12 +201,29 @@ class BudgetFragment : Fragment() {
         yAxis.setDrawGridLines(false)
 
         //set up legend
-        val colors: Array<Int> = arrayOf<Int>(resources.getColor(R.color.colorChartGreen), resources.getColor(R.color.colorRed))
+        val colors: Array<Int> = arrayOf<Int>(
+            ContextCompat.getColor(context!!, R.color.colorChartGreen),
+            ContextCompat.getColor(context!!, R.color.colorRed)
+        )
         barChart.legend.isEnabled = true
         barChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        val l1 = LegendEntry(getString(R.string.positive_balance), Legend.LegendForm.SQUARE, 10f, 2f, null, colors[0])
-        val l2 = LegendEntry(getString(R.string.negative_balance), Legend.LegendForm.SQUARE, 10f, 2f, null, colors[1])
-        barChart.legend.setCustom( arrayOf( l1, l2 ) )
+        val l1 = LegendEntry(
+            getString(R.string.positive_balance),
+            Legend.LegendForm.SQUARE,
+            10f,
+            2f,
+            null,
+            colors[0]
+        )
+        val l2 = LegendEntry(
+            getString(R.string.negative_balance),
+            Legend.LegendForm.SQUARE,
+            10f,
+            2f,
+            null,
+            colors[1]
+        )
+        barChart.legend.setCustom(arrayOf(l1, l2))
 
         //modify the default appearance
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)

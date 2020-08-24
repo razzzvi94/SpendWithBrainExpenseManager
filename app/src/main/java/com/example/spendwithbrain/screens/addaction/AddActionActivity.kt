@@ -111,7 +111,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     private fun initDatePicker() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH) + 1
+        val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val min = c.get(Calendar.MINUTE)
@@ -121,14 +121,20 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
                 this,
                 DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
                     dateEditText.setText(mYear.toString() + "-" + mMonth.toString() + "-" + mDay.toString() + " at " + hour + ":" + min)
+                    gmtTimestamp = c.run {
+                        c.set(Calendar.YEAR, mYear)
+                        c.set(Calendar.MONTH, mMonth)
+                        c.set(Calendar.DAY_OF_MONTH, mDay)
+                        timeInMillis
+                    }
                 },
                 year,
                 month,
                 day
             )
             dpd.show()
+            dpd.datePicker.maxDate = System.currentTimeMillis();
         }
-        gmtTimestamp = Calendar.getInstance().timeInMillis
     }
 
     private fun initCategoryGrid() {
@@ -223,7 +229,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
 
     private fun imageToBitmap(image: ImageView): ByteArray {
         var returnArray = ByteArray(0)
-        if(image.drawable != null){
+        if (image.drawable != null) {
             val bitmap = (image.drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)

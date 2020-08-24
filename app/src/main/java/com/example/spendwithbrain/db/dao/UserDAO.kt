@@ -1,12 +1,12 @@
-package com.example.spendwithbrain.db.interfaces
+package com.example.spendwithbrain.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.db.entities.UserDetails
+import com.example.spendwithbrain.db.models.UserWithExpenses
+import io.reactivex.Flowable
+import io.reactivex.Single
 
 
 @Dao
@@ -31,4 +31,8 @@ interface UserDAO {
 
     @Query("SELECT userCurrentBalance FROM userDetails WHERE userId = :userId")
     fun getUserBalance(userId: Int): Int
+
+    @Transaction
+    @Query("SELECT * FROM userDetails WHERE userId=:userId")
+    fun getUserExpenses(userId: Int): UserWithExpenses
 }
