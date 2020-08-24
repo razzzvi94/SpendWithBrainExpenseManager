@@ -1,7 +1,5 @@
 package com.example.spendwithbrain.screens.main.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -16,6 +14,7 @@ import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.db.models.UserWithExpenses
 import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.DateUtils
+import com.example.spendwithbrain.utils.SharedPrefUtils
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -32,7 +31,6 @@ import kotlin.collections.ArrayList
 
 class BudgetFragment : Fragment() {
     private lateinit var layout: View
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var balanceValue: TextView
     private lateinit var todayExpenseValue: TextView
     private lateinit var weekExpenseValue: TextView
@@ -66,12 +64,7 @@ class BudgetFragment : Fragment() {
 
     private fun loadUserWithExpenses(): UserWithExpenses {
         return RoomDb.db.userDetailsDAO()
-            .getUserExpenses(
-                activity!!.getSharedPreferences(
-                    Constants.MY_SHARED_PREFERENCE,
-                    Constants.PRIVATE_MODE
-                ).getInt(Constants.USER_ID, -1)
-            )
+            .getUserExpenses(SharedPrefUtils.read(Constants.USER_ID, -1))
     }
 
     private fun computeMonthCashFlow(
@@ -98,9 +91,6 @@ class BudgetFragment : Fragment() {
     }
 
     private fun initComponents() {
-        sharedPreferences =
-            activity!!.getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
-
         val startDay = Calendar.getInstance().timeInMillis - (24 * 60 * 60 * 1000)
         val endDay = Calendar.getInstance().timeInMillis
 
@@ -112,9 +102,9 @@ class BudgetFragment : Fragment() {
         c1.add(Calendar.WEEK_OF_MONTH, -1)
         val startWeek = c1.timeInMillis
 
-        if (sharedPreferences.contains(Constants.USER_ID)) {
+        if (SharedPrefUtils.hasKey(Constants.USER_ID)) {
             Thread {
-                val userId = sharedPreferences.getInt(Constants.USER_ID, -1)
+                val userId = SharedPrefUtils.read(Constants.USER_ID, -1)
                 val userBalance = RoomDb.db.userDetailsDAO()
                     .getUserBalance(userId).toString()
 

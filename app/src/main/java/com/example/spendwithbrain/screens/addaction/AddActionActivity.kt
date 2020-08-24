@@ -2,9 +2,7 @@ package com.example.spendwithbrain.screens.addaction
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -26,6 +24,7 @@ import com.example.spendwithbrain.models.CategoryItem
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapter
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapterListener
 import com.example.spendwithbrain.utils.Constants
+import com.example.spendwithbrain.utils.SharedPrefUtils
 import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,8 +44,6 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     private lateinit var saveButton: TextView
     private lateinit var categorySelected: String
     private lateinit var fragmentTitle: String
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
     private var userId: Int = -1
     private var gmtTimestamp: Long = -1
 
@@ -78,10 +75,8 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     }
 
     private fun initComponents() {
-        sharedPreferences =
-            getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
-        if (sharedPreferences.contains(Constants.USER_ID)) {
-            userId = sharedPreferences.getInt(Constants.USER_ID, -1)
+        if (SharedPrefUtils.hasKey(Constants.USER_ID)) {
+            userId = SharedPrefUtils.read(Constants.USER_ID, -1)
         }
 
         dateEditText = findViewById(R.id.date_EditText)
@@ -185,7 +180,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
             if (detailsImage.drawable != null) {
                 defaultDetailsImage = detailsImage.drawable
             }
-            if (categorySelected == resources.getString(R.string.income) && sharedPreferences.contains(
+            if (categorySelected == resources.getString(R.string.income) && SharedPrefUtils.hasKey(
                     Constants.USER_ID
                 )
             ) {
@@ -202,7 +197,7 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
                 RoomDb.db.incomeDetailsDAO()
                     .updateUserBudget(userId, amountEditText.text.toString().toLong())
             } else {
-                if (sharedPreferences.contains(Constants.USER_ID)) {
+                if (SharedPrefUtils.hasKey(Constants.USER_ID)) {
                     val objDetails = ExpensesDetails(
                         userId = userId,
                         expensesDate = gmtTimestamp,
