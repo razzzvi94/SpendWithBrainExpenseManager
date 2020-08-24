@@ -1,15 +1,10 @@
 package com.example.spendwithbrain.screens.main
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -32,7 +27,7 @@ import kotlinx.android.synthetic.main.home_toolbar.view.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var layout :View
+    private lateinit var layout: View
     private lateinit var toolbar: Toolbar
     private lateinit var navigationDrawer: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
@@ -41,7 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        layout = View.inflate(this,R.layout.activity_main,null)
+        layout = View.inflate(this, R.layout.activity_main, null)
         setContentView(layout)
         initComponents()
         initToolbar()
@@ -100,7 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun initNavigationDrawer() {
         val header = layout.home_nav_view.getHeaderView(0)
         userName = header.side_menu_user_name
-        if(SharedPrefUtils.hasKey(Constants.USER_NAME)){
+        if (SharedPrefUtils.hasKey(Constants.USER_NAME)) {
             userName.text = SharedPrefUtils.read(Constants.USER_NAME, "")
         }
 

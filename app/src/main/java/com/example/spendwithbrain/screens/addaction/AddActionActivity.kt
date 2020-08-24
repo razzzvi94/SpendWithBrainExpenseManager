@@ -181,7 +181,9 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
             if (detailsImage.drawable != null) {
                 defaultDetailsImage = detailsImage.drawable
             }
-            if (categorySelected == resources.getString(R.string.income) && SharedPrefUtils.hasKey(Constants.USER_ID)
+            if (categorySelected == resources.getString(R.string.income) && SharedPrefUtils.hasKey(
+                    Constants.USER_ID
+                )
             ) {
                 val objDetails = IncomeDetails(
                     userId = userId,

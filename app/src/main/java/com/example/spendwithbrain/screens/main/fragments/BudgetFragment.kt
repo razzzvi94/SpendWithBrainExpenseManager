@@ -1,7 +1,5 @@
 package com.example.spendwithbrain.screens.main.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
