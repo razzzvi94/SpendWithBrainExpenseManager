@@ -1,9 +1,6 @@
 package com.example.spendwithbrain.screens.login
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -16,6 +13,7 @@ import com.example.spendwithbrain.db.entities.UserDetails
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.screens.register.RegisterActivity
 import com.example.spendwithbrain.utils.Constants
+import com.example.spendwithbrain.utils.SharedPrefUtils
 import com.example.spendwithbrain.utils.Validations
 import com.google.android.material.textfield.TextInputEditText
 
@@ -25,8 +23,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var registerBtn: TextView
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,25 +39,26 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener(loginOnClickListener)
         registerBtn.setOnClickListener(registerOnClickListener)
 
-        sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
+        SharedPrefUtils.init(applicationContext)
     }
 
     private val loginOnClickListener =
         View.OnClickListener {
             if (checkInputs()) {
-                Thread{
-                   var list: List<UserDetails> = RoomDb.db.userDetailsDAO().getUserByEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
-                    if(list.isNotEmpty()){
+                Thread {
+                    var list: List<UserDetails> = RoomDb.db.userDetailsDAO()
+                        .getUserByEmailAndPassword(
+                            emailEditText.text.toString(),
+                            passwordEditText.text.toString()
+                        )
+                    if (list.isNotEmpty()) {
                         //if user exists in DB
-                        editor.putInt(Constants.USER_ID, list[0].userId)
-                        editor.putString(Constants.USER_NAME, list[0].userName)
-                        editor.commit()
+                        SharedPrefUtils.write(Constants.USER_ID, list[0].userId)
+                        SharedPrefUtils.write(Constants.USER_NAME, list[0].userName)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }
-                    else{
+                    } else {
                         //if user DOESN'T exist in DB
                         val intent = Intent(this, RegisterActivity::class.java)
                         startActivity(intent)

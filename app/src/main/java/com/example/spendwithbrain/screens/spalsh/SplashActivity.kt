@@ -1,6 +1,5 @@
 package com.example.spendwithbrain.screens.spalsh
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,6 +9,7 @@ import com.example.spendwithbrain.R
 import com.example.spendwithbrain.screens.login.LoginActivity
 import com.example.spendwithbrain.screens.main.MainActivity
 import com.example.spendwithbrain.utils.Constants
+import com.example.spendwithbrain.utils.SharedPrefUtils
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -23,13 +23,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initComponents() {
-        sharedPreferences =
-            getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        SharedPrefUtils.init(applicationContext)
     }
 
     private fun splashDelay() {
         //if user logged in go to MainActivity
-        if (sharedPreferences.contains(Constants.USER_ID)) {
+        if (SharedPrefUtils.hasKey(Constants.USER_ID)) {
             Handler().postDelayed({
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()

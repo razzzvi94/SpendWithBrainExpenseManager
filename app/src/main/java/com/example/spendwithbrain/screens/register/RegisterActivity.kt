@@ -55,11 +55,6 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 RoomDb.db.userDetailsDAO().insertOrUpdateUser(userDetails)
 
-//                RoomDb.db.userDetailsDAO().getAllUsers().forEach {
-//                    Log.i("@TAG", """"ID is: ${it.userId}"""")
-//                    Log.i("@TAG", """"Name is: ${it.userName}"""")
-//                    Log.i("@TAG", """"Email is: ${it.userEmail}"""")
-//                }
             }.start()
 
             val intent = Intent(this, LoginActivity::class.java)

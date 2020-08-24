@@ -23,6 +23,7 @@ import com.example.spendwithbrain.screens.login.LoginActivity
 import com.example.spendwithbrain.screens.main.fragments.BudgetFragment
 import com.example.spendwithbrain.screens.main.fragments.ExpensesFragment
 import com.example.spendwithbrain.utils.Constants
+import com.example.spendwithbrain.utils.SharedPrefUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -36,8 +37,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navigationDrawer: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
     private lateinit var userName: TextView
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initComponents() {
-        sharedPreferences = getSharedPreferences(Constants.MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
+        SharedPrefUtils.init(applicationContext)
 
         layout.button_add_action.setOnClickListener(addActionOnClickListener)
         layout.home_nav_view.setNavigationItemSelectedListener(this)
@@ -102,8 +100,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun initNavigationDrawer() {
         val header = layout.home_nav_view.getHeaderView(0)
         userName = header.side_menu_user_name
-        if(sharedPreferences.contains(Constants.USER_NAME)){
-            userName.text = sharedPreferences.getString(Constants.USER_NAME, "")
+        if(SharedPrefUtils.hasKey(Constants.USER_NAME)){
+            userName.text = SharedPrefUtils.read(Constants.USER_NAME, "")
         }
 
         navigationDrawer = layout.home_drawer_layout
@@ -127,8 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private val logoutOnClickListener = View.OnClickListener {
-        editor.clear()
-        editor.commit()
+        SharedPrefUtils.clear()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

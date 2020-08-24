@@ -14,7 +14,6 @@ object Constants {
 
 
         //Strings
-        const val FRAGMENT_TITLE = "FRAGMENT_TITLE"
         const val MY_SHARED_PREFERENCE = "MY_SHARED_PREFERENCE"
         const val USER_ID = "USER_ID"
         const val USER_NAME = "USER_NAME"
