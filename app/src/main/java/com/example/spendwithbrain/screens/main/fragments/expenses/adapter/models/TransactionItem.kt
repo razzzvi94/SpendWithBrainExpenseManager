@@ -1,4 +1,4 @@
-package com.example.spendwithbrain.screens.main.fragments.expenses.adaptor.models
+package com.example.spendwithbrain.screens.main.fragments.expenses.adapter.models
 
 data class TransactionItem(
     val transactionDate: Long,

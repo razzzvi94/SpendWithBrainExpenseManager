@@ -3,6 +3,7 @@
     package="com.example.spendwithbrain">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".app.ExpensesApp"
@@ -45,7 +46,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarNoFullScreen"
             android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".screens.converter.ConverterActivity" />
+        <activity android:name=".screens.converter.ConverterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarNoFullScreen"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

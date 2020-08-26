@@ -12,8 +12,8 @@ import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.db.models.UserWithExpenses
-import com.example.spendwithbrain.screens.main.fragments.expenses.adaptor.TransactionAdapter
-import com.example.spendwithbrain.screens.main.fragments.expenses.adaptor.models.Transaction
+import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.TransactionAdapter
+import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.models.Transaction
 import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.DateUtils
 import com.example.spendwithbrain.utils.SharedPrefUtils

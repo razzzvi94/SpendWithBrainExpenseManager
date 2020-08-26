@@ -1,4 +1,4 @@
-package com.example.spendwithbrain.screens.main.fragments.expenses.adaptor
+package com.example.spendwithbrain.screens.main.fragments.expenses.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spendwithbrain.R
-import com.example.spendwithbrain.screens.main.fragments.expenses.adaptor.models.Transaction
+import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.models.Transaction
 import com.example.spendwithbrain.utils.TimeUtils
 
 class TransactionAdapter(
