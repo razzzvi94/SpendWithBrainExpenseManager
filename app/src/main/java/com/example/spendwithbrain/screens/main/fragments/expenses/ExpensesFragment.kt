@@ -203,8 +203,14 @@ class ExpensesFragment : Fragment(), SegmentView.OnSegmentItemSelectedListener {
         orderedList[orderedList.size-1].balance = orderedList[orderedList.size-1].amount
         for (index in 1 until orderedList.size) {
             if (orderedList[index].category == "Income") {
-                orderedList[index].balance =
+                if(orderedList[index-1].category == "Income"){
+                                    orderedList[index].balance =
                     orderedList[index - 1].balance - orderedList[index-1].amount
+                }
+                else{
+                    orderedList[index].balance =
+                        orderedList[index - 1].balance + orderedList[index-1].amount
+                }
             }
             else{
                 orderedList[index].balance = orderedList[index-1].balance + orderedList[index-1].amount
