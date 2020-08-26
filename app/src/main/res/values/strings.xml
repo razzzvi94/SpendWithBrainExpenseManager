@@ -43,7 +43,22 @@
     <string name="details">Details</string>
     <string name="today_expenses">Today Expenses</string>
     <string name="income">Income</string>
+    <string name="expense">Expense</string>
     <string name="expense_details_month">Expense details this month</string>
     <string name="positive_balance">Positive Balance</string>
     <string name="negative_balance">Negative Balance</string>
+    <string name="total_expensed">Total expensed</string>
+    <string name="this_week">This week</string>
+    <string name="this_month">This month</string>
+    <string name="this_year">This year</string>
+    <string name="food">Food</string>
+    <string name="car">Car</string>
+    <string name="clothes">Clothes</string>
+    <string name="savings">Savings</string>
+    <string name="health">Health</string>
+    <string name="beauty">Beauty</string>
+    <string name="travel">Travel</string>
+    <string name="string_0">0</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 </resources>

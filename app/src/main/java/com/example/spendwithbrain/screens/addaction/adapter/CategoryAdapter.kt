@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spendwithbrain.R
-import com.example.spendwithbrain.models.CategoryItem
+import com.example.spendwithbrain.screens.addaction.adapter.models.CategoryItem
 
 class CategoryAdapter(
     private val context: Context,

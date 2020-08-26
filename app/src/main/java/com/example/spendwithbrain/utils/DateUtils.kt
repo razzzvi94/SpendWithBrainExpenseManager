@@ -24,4 +24,10 @@ object DateUtils {
         }
         return SimpleDateFormat("MMM").format(calendar.time)
     }
+
+    fun getEndDate(param: Int): Long {
+        val c1: Calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        c1.add(param, -1)
+        return c1.timeInMillis
+    }
 }

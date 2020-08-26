@@ -1,4 +1,4 @@
-package com.example.spendwithbrain.screens.main.fragments
+package com.example.spendwithbrain.screens.main.fragments.budget
 
 import android.os.Bundle
 import android.os.Handler
@@ -91,7 +91,7 @@ class BudgetFragment : Fragment() {
     }
 
     private fun initComponents() {
-        val startDay = Calendar.getInstance().timeInMillis - (24 * 60 * 60 * 1000)
+        val startDay = Calendar.getInstance().timeInMillis - Constants.oneDayMs
         val endDay = Calendar.getInstance().timeInMillis
 
         val c: Calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))

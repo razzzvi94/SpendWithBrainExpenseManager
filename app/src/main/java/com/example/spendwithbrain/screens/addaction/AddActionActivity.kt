@@ -20,9 +20,9 @@ import com.example.spendwithbrain.R
 import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.db.entities.IncomeDetails
-import com.example.spendwithbrain.models.CategoryItem
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapter
 import com.example.spendwithbrain.screens.addaction.adapter.CategoryAdapterListener
+import com.example.spendwithbrain.screens.addaction.adapter.models.CategoryItem
 import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.SharedPrefUtils
 import java.io.ByteArrayOutputStream
@@ -86,7 +86,6 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
         loadImageBtn = findViewById(R.id.add_image)
         deleteImage = findViewById(R.id.delete)
         saveButton = findViewById(R.id.button_save)
-
         loadImageBtn.setOnClickListener(loadImageOnClickListener)
         detailsImage.setOnClickListener(loadImageOnClickListener)
         deleteImage.setOnClickListener(deleteImageOnClickListener)
