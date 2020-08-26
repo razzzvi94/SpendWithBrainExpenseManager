@@ -64,10 +64,16 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.ADD_LOCAL_IMAGE) {
             detailsImage.setBackgroundResource(android.R.color.transparent)
             detailsImage.setImageURI(data?.data)
         }
+        if(resultCode == Activity.RESULT_OK && requestCode == Constants.CAMERA_IMAGE){
+            var bitmap: Bitmap = data?.extras?.get("data") as Bitmap
+            detailsImage.setBackgroundResource(android.R.color.transparent)
+            detailsImage.setImageBitmap(bitmap)
+        }
+
     }
 
     override fun onCategoryClick(category: CategoryItem) {
@@ -86,7 +92,8 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
         loadImageBtn = findViewById(R.id.add_image)
         deleteImage = findViewById(R.id.delete)
         saveButton = findViewById(R.id.button_save)
-        loadImageBtn.setOnClickListener(loadImageOnClickListener)
+
+        loadImageBtn.setOnClickListener(openCameraOnClickListener)
         detailsImage.setOnClickListener(loadImageOnClickListener)
         deleteImage.setOnClickListener(deleteImageOnClickListener)
         saveButton.setOnClickListener(saveOnClickListener)
@@ -161,7 +168,12 @@ class AddActionActivity : AppCompatActivity(), CategoryAdapterListener {
     private val loadImageOnClickListener = View.OnClickListener {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, Constants.REQUEST_CODE)
+        startActivityForResult(intent, Constants.ADD_LOCAL_IMAGE)
+    }
+
+    private val openCameraOnClickListener = View.OnClickListener {
+        val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, Constants.CAMERA_IMAGE)
     }
 
     private val deleteImageOnClickListener = View.OnClickListener {

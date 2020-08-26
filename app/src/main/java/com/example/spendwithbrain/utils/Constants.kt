@@ -3,7 +3,8 @@ package com.example.spendwithbrain.utils
 object Constants {
     //Numbers
     const val SPLASH_TIME_OUT: Long = 2000
-    const val REQUEST_CODE = 420
+    const val ADD_LOCAL_IMAGE = 420
+    const val CAMERA_IMAGE = 240
     const val PRIVATE_MODE = 0
     const val FIRST_HOUR = 0
     const val FIRST_MINUTE = 0
