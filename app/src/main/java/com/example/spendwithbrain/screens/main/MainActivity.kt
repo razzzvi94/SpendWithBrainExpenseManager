@@ -15,8 +15,8 @@ import com.example.spendwithbrain.R
 import com.example.spendwithbrain.screens.addaction.AddActionActivity
 import com.example.spendwithbrain.screens.converter.ConverterActivity
 import com.example.spendwithbrain.screens.login.LoginActivity
-import com.example.spendwithbrain.screens.main.fragments.BudgetFragment
-import com.example.spendwithbrain.screens.main.fragments.ExpensesFragment
+import com.example.spendwithbrain.screens.main.fragments.budget.BudgetFragment
+import com.example.spendwithbrain.screens.main.fragments.expenses.ExpensesFragment
 import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.SharedPrefUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -134,11 +134,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var selectedFragment: Fragment? = null
             when (item.itemId) {
                 R.id.bottom_nav_budget -> {
-                    selectedFragment = BudgetFragment()
+                    selectedFragment =
+                        BudgetFragment()
                     toolbar.title = resources.getString(R.string.my_budget)
                 }
                 R.id._bottom_nav_expenses -> {
-                    selectedFragment = ExpensesFragment()
+                    selectedFragment =
+                        ExpensesFragment()
                     toolbar.title = resources.getString(R.string.my_expenses)
                 }
             }

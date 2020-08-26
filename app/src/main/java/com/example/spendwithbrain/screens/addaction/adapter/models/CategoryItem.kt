@@ -1,4 +1,4 @@
-package com.example.spendwithbrain.models
+package com.example.spendwithbrain.screens.addaction.adapter.models
 
 import android.graphics.drawable.Drawable
 

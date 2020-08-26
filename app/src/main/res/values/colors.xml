@@ -12,8 +12,11 @@
     <color name="colorLightGray">#FAFAFA</color>
     <color name="colorGrayBackground">#E5E5E5</color>
     <color name="colorGrayCategory">#F5F3F3</color>
+    <color name="colorGrayTransaction">#F7F4F4</color>
+    <color name="colorGrayTransactionBorder">#DCDCDC</color>
     <color name="colorTransparentGreen">#40009688</color>
     <color name="colorTransparentRed">#40E05858</color>
     <color name="colorRed">#FD1313</color>
     <color name="colorChartGreen">#3ddc4d</color>
+    <color name="colorUnselectedView">#FFF9F9</color>
 </resources>

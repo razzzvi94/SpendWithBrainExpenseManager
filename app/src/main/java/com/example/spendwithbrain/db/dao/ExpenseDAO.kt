@@ -14,4 +14,10 @@ interface ExpenseDAO {
 
     @Query("SELECT expensesId, userId, expensesDate, SUM(expensesAmount)  AS expensesAmount, expensesCategory, expensesDetails, expensesImage FROM expensesDetails WHERE userId = :id GROUP BY expensesCategory")
     fun getExpenseByCategory(id: Int): List<ExpensesDetails>
+
+    @Query("SELECT SUM(expensesAmount)  AS expensesAmount FROM expensesDetails WHERE userId = :id AND expensesDate BETWEEN :dateStart AND :dateEnd")
+    fun getExpenseInInterval(id: Int, dateStart: Long, dateEnd: Long): String
+
+    @Query("SELECT expensesId, userId, expensesDate, SUM(expensesAmount)  AS expensesAmount, expensesCategory, expensesDetails, expensesImage FROM expensesDetails WHERE userId = :id AND expensesDate BETWEEN :dateStart AND :dateEnd GROUP BY expensesCategory")
+    fun getExpensesByCategoryInInterval(id: Int, dateStart: Long, dateEnd: Long): MutableList<ExpensesDetails>
 }
