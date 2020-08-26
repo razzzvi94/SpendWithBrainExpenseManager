@@ -13,6 +13,7 @@ import com.example.spendwithbrain.rest.apiModels.response.CurrencyCoin
 import com.example.spendwithbrain.rest.apiModels.response.CurrencyResponse
 import com.example.spendwithbrain.screens.converter.adapter.CurrencyAdapter
 import com.example.spendwithbrain.screens.converter.adapter.models.CurrencyItem
+import kotlinx.android.synthetic.main.activity_add_action.view.*
 import kotlinx.android.synthetic.main.activity_converter.view.*
 import kotlinx.android.synthetic.main.home_toolbar.view.*
 import retrofit2.Call
@@ -33,6 +34,11 @@ class ConverterActivity : AppCompatActivity() {
         getCurrency()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     private fun iniToolbar() {
         var toolbar = layout.home_tool_bar
         setSupportActionBar(toolbar)
@@ -40,6 +46,9 @@ class ConverterActivity : AppCompatActivity() {
         toolbar.title = getString(R.string.converter)
         toolbar.setTitleTextAppearance(this, R.style.HomeToolbarFont)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        layout.home_tool_bar.button_add_action.visibility = View.GONE
     }
 
     private fun initMessage(date: String) {

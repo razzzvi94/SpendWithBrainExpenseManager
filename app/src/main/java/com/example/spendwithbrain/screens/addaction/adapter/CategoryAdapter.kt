@@ -17,7 +17,7 @@ class CategoryAdapter(
     private val categoryAdapterListener: CategoryAdapterListener
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    var previousSelectedItem = -1
+    private var previousSelectedItem = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.category_item, parent, false)
 

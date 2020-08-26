@@ -8,7 +8,7 @@
     tools:context=".screens.converter.ConverterActivity">
 
     <include
-        layout="@layout/transaction_toolbar" />
+        layout="@layout/home_toolbar" />
 
     <TextView
         android:id="@+id/converted_using_api_textView"

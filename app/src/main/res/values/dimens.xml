@@ -93,4 +93,6 @@
     <dimen name="space_69dp">69dp</dimen>
     <dimen name="space_55dp">55dp</dimen>
     <dimen name="space_29dp">29dp</dimen>
+    <dimen name="text_15sp">15sp</dimen>
+    <dimen name="space_165dp">165dp</dimen>
 </resources>
