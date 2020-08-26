@@ -61,4 +61,5 @@
     <string name="string_0">0</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="dodgy_api_date">Converted using SDA (SOME DODGY API) at date %1s</string>
 </resources>
