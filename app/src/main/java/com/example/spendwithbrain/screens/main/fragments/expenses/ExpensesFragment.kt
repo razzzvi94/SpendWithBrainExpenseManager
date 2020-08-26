@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spendwithbrain.R
@@ -12,7 +13,9 @@ import com.example.spendwithbrain.db.RoomDb
 import com.example.spendwithbrain.db.entities.ExpensesDetails
 import com.example.spendwithbrain.db.entities.IncomeDetails
 import com.example.spendwithbrain.db.models.UserWithExpenses
+import com.example.spendwithbrain.screens.main.fragments.expenses.dialog.ExpenseDialog
 import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.TransactionAdapter
+import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.TransactionAdapterListener
 import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.models.Transaction
 import com.example.spendwithbrain.utils.Constants
 import com.example.spendwithbrain.utils.DateUtils
@@ -29,7 +32,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ExpensesFragment : Fragment(), SegmentView.OnSegmentItemSelectedListener {
+class ExpensesFragment : Fragment(), SegmentView.OnSegmentItemSelectedListener, TransactionAdapterListener {
     private lateinit var layout: View
     private var userId: Int = 0
     private var endDay: Long = 0
@@ -74,6 +77,12 @@ class ExpensesFragment : Fragment(), SegmentView.OnSegmentItemSelectedListener {
     }
 
     override fun onSegmentItemReselected(index: Int) {}
+
+    override fun onTransactionClick(transaction: Transaction) {
+        val infoDialog: ExpenseDialog =
+            ExpenseDialog()
+        fragmentManager?.let { infoDialog.show(it, "fragmentDialog") }
+    }
 
     private fun initSegmentComponents() {
         layout.interval_segment_view.setText(0, getString(R.string.this_week))
@@ -180,7 +189,7 @@ class ExpensesFragment : Fragment(), SegmentView.OnSegmentItemSelectedListener {
 
         calculateDynamicBalance(orderedList, userDetails)
 
-        layout.transactions_recycler.adapter = TransactionAdapter(context!!, orderedList)
+        layout.transactions_recycler.adapter = TransactionAdapter(context!!, orderedList, this)
         layout.transactions_recycler.layoutManager = LinearLayoutManager(context)
     }
 

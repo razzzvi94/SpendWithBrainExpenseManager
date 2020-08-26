@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spendwithbrain.R
 import com.example.spendwithbrain.screens.main.fragments.expenses.adapter.models.Transaction
@@ -13,7 +14,8 @@ import com.example.spendwithbrain.utils.TimeUtils
 
 class TransactionAdapter(
     private val context: Context,
-    private val arrayList: List<Transaction>
+    private val arrayList: List<Transaction>,
+    private val transactionAdapterListener: TransactionAdapterListener
 ) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.transaction_item, parent, false)
@@ -62,6 +64,7 @@ class TransactionAdapter(
                 holder.transactionCategoryIcon.setImageResource(R.drawable.ic_category_travel)
             }
         }
+        holder.transactionBox.setOnClickListener { transactionAdapterListener.onTransactionClick(currentItem) }
     }
 
     override fun getItemCount(): Int {
@@ -78,5 +81,6 @@ class TransactionAdapter(
             itemView.findViewById(R.id.transaction_amount_value_textView)
         val transactionName: TextView = itemView.findViewById(R.id.transaction_name_textView)
         val balanceValue: TextView = itemView.findViewById(R.id.balance_value_textView)
+        val transactionBox: ConstraintLayout = itemView.findViewById(R.id.transaction_item)
     }
 }
